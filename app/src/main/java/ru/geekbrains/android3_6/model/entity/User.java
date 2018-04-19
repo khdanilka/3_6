@@ -11,7 +11,7 @@ public class User
 {
     String avatarUrl;
     String login;
-    List<Repository> repos = new ArrayList<>();
+    List<Repository> repos;
 
     public User(String login, String avatarUrl)
     {

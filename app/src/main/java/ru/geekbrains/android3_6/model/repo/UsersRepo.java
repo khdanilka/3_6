@@ -3,6 +3,7 @@ package ru.geekbrains.android3_6.model.repo;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 import ru.geekbrains.android3_6.NetworkStatus;
 import ru.geekbrains.android3_6.model.api.ApiService;
 import ru.geekbrains.android3_6.model.cache.ICache;
@@ -24,8 +25,12 @@ public class UsersRepo
     {
         if (NetworkStatus.isOnline())
         {
-            return api.getUser(username).map(user ->
-            {
+            Observable<User> userR = api.getUser(username).map(user -> {
+                cache.putUser(user);
+                return user;
+            });
+
+            return api.getUser(username).map(user -> {
                 cache.putUser(user);
                 return user;
             });

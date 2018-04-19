@@ -3,7 +3,6 @@ package ru.geekbrains.android3_6;
 import io.paperdb.Paper;
 import io.realm.Realm;
 import ru.geekbrains.android3_6.di.AppComponent;
-
 import ru.geekbrains.android3_6.di.DaggerAppComponent;
 import ru.geekbrains.android3_6.di.modules.AppModule;
 

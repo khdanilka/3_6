@@ -1,5 +1,6 @@
 package ru.geekbrains.android3_6.di.modules;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -14,7 +15,7 @@ public class RepoModule
 {
     @Singleton
     @Provides
-    public UsersRepo usersRepo(ApiService apiService, ICache cache)
+    public UsersRepo usersRepo(ApiService apiService, @Named("realm") ICache cache)
     {
         return new UsersRepo(apiService, cache);
     }

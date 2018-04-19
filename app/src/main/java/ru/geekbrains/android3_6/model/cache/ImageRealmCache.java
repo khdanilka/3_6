@@ -13,11 +13,11 @@ import ru.geekbrains.android3_6.App;
 import ru.geekbrains.android3_6.model.entity.realm.CachedImage;
 import timber.log.Timber;
 
-public class ImageCache
+public class ImageRealmCache
 {
     private static final String IMAGE_FOLDER_NAME = "image";
 
-    public static File getFile(String url)
+    public File getFile(String url)
     {
         CachedImage cachedImage = Realm.getDefaultInstance().where(CachedImage.class).equalTo("url", url).findFirst();
         if (cachedImage != null)
@@ -27,18 +27,18 @@ public class ImageCache
         return null;
     }
 
-    public static boolean contains(String url)
+    public boolean contains(String url)
     {
         return Realm.getDefaultInstance().where(CachedImage.class).equalTo("url", url).count() > 0;
     }
 
-    public static void clear()
+    public void clear()
     {
         Realm.getDefaultInstance().executeTransaction(realm -> realm.delete(CachedImage.class));
         deleteFileOrDirRecursive(getImageDir());
     }
 
-    public static File saveImage(final String url, Bitmap bitmap)
+    public File saveImage(final String url, Bitmap bitmap)
     {
         if (!getImageDir().exists() && !getImageDir().mkdirs())
         {
@@ -96,7 +96,7 @@ public class ImageCache
         return getFileOrDirSize(getImageDir()) / 1024f;
     }
 
-    public static void deleteFileOrDirRecursive(File fileOrDirectory) {
+    public void deleteFileOrDirRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory())
         {
             for (File child : fileOrDirectory.listFiles())

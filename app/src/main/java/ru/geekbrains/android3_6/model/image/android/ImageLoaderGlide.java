@@ -1,9 +1,7 @@
 package ru.geekbrains.android3_6.model.image.android;
 
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.DataSource;
@@ -11,16 +9,10 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import java.io.ByteArrayOutputStream;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import javax.inject.Inject;
 
-import dagger.Module;
-import dagger.Provides;
-import io.paperdb.Paper;
 import ru.geekbrains.android3_6.NetworkStatus;
-import ru.geekbrains.android3_6.model.cache.ImageCache;
+import ru.geekbrains.android3_6.model.cache.ImageRealmCache;
 import ru.geekbrains.android3_6.model.image.ImageLoader;
 import timber.log.Timber;
 
@@ -33,6 +25,11 @@ public class ImageLoaderGlide implements ImageLoader<ImageView>
 {
     private static final String TAG = "ImageLoaderGlide";
 
+    @Inject ImageRealmCache imageRealmCache;
+
+    public ImageLoaderGlide(ImageRealmCache imageRealmCache) {
+        this.imageRealmCache = imageRealmCache;
+    }
 
     @Override
     public void loadInto(@Nullable String url, ImageView container)
@@ -51,17 +48,17 @@ public class ImageLoaderGlide implements ImageLoader<ImageView>
                 @Override
                 public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource)
                 {
-                    ImageCache.saveImage(url, resource);
+                    imageRealmCache.saveImage(url, resource);
                     return false;
                 }
             }).into(container);
         }
         else
         {
-            if(ImageCache.contains(url))
+            if(imageRealmCache.contains(url))
             {
                 GlideApp.with(container.getContext())
-                        .load(ImageCache.getFile(url))
+                        .load(imageRealmCache.getFile(url))
                         .into(container);
             }
         }
