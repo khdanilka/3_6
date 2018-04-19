@@ -47,7 +47,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView
     @InjectPresenter MainPresenter presenter;
     @Inject App app;
 
-    ImageLoader<ImageView> imageLoader = new ImageLoaderGlide();
+    @Inject ImageLoader<ImageView> imageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

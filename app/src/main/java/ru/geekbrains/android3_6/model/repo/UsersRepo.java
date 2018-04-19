@@ -11,7 +11,6 @@ import ru.geekbrains.android3_6.model.entity.User;
 
 public class UsersRepo
 {
-
     ApiService api;
     ICache cache;
 
